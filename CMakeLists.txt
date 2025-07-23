@@ -4,18 +4,14 @@ project(MemoryLeaks)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(leak main_leak.cpp)
-target_compile_options(leak PRIVATE -fsanitize=leak)
-target_link_options(leak PRIVATE -fsanitize=leak)
-
-add_executable(no_leak main_no_leak.cpp)
-target_compile_options(no_leak PRIVATE -fsanitize=leak)
-target_link_options(no_leak PRIVATE -fsanitize=leak)
+add_executable(main main.cpp)
+target_compile_options(main PRIVATE -fsanitize=leak)
+target_link_options(main PRIVATE -fsanitize=leak)
 
 # Add the leak executable as a test
 enable_testing()
 
-add_test(NAME LeakTest COMMAND leak)
+add_test(NAME LeakTest COMMAND main --fail-early=1)
 set_tests_properties(LeakTest PROPERTIES WILL_FAIL TRUE)
 
-add_test(NAME NoLeakTest COMMAND no_leak)
+add_test(NAME NoLeakTest COMMAND main --fail-early=0)
