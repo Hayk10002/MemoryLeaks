@@ -1,6 +1,20 @@
 #include <iostream>
 #include <cstring>
 
+#if defined(__has_feature)
+#  if __has_feature(address_sanitizer)
+#    define USING_SANITIZERS 1
+#  endif
+#endif
+
+#if defined(__SANITIZE_ADDRESS__)
+#  define USING_SANITIZERS 1
+#endif
+
+#ifdef USING_SANITIZERS
+#  include <sanitizer/lsan_interface.h>
+#endif
+
 // leaks if failEarly is true
 char* getMessage(bool failEarly) {
 
@@ -34,6 +48,11 @@ int main(int argc, char* argv[]) {
         std::cout << result << std::endl;
         delete[] result;
     }
+
+#ifdef USING_SANITIZERS
+    std::cout << "Checking for leaks.\n";
+    __lsan_do_leak_check();
+#endif
 
     return 0;
 }
