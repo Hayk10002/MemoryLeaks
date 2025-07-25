@@ -1,10 +1,13 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 
 // leaks if failEarly is true
-std::string* getMessage(bool failEarly) {
+char* getMessage(bool failEarly) {
 
-    std::string* msg = new std::string("Hello, LeakSan!");
+    char MSG[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor ex et mollis bibendum. Nulla ornare dolor vitae augue elementum tempus. Cras ac efficitur libero. Aliquam erat volutpat. Praesent et malesuada tellus. Aliquam convallis magna ut pulvinar laoreet. Nunc aliquam, nibh vitae pellentesque mollis, ex enim iaculis neque, accumsan molestie urna velit eget urna. Maecenas ex libero, interdum et ligula nec, fringilla efficitur nulla. Ut vel dui commodo, hendrerit neque quis, consectetur nulla. Vivamus pharetra eu erat at ornare. Duis varius libero vitae est efficitur varius. Curabitur dui risus, porttitor sed est finibus, porta faucibus mi. Duis suscipit ultrices ligula vel rhoncus. Nullam congue justo augue. ";
+    char* msg = new char[800];
+
+    std::strcpy(msg, MSG); 
 
     if (failEarly) return nullptr;
 
@@ -25,10 +28,10 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::string* result = getMessage(failEarly);
+    char* result = getMessage(failEarly);
 
     if (result) {
-        std::cout << *result << std::endl;
+        std::cout << result << std::endl;
         delete result;
     }
 
