@@ -5,8 +5,8 @@ project(MemoryLeaks)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(main main.cpp)
-target_compile_options(main PRIVATE -fsanitize=address)
-target_link_options(main PRIVATE -fsanitize=address)
+target_compile_options(main PRIVATE -fsanitize=address,leak)
+target_link_options(main PRIVATE -fsanitize=address,leak)
 
 # Add the leak executable as a test
 enable_testing()
